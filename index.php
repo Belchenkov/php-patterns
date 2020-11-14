@@ -1,14 +1,17 @@
 <?php
 
-use FabricMethod\FileSaveFactory;
-use FabricMethod\MysqlSaveFactory;
+use AbstractFactory\DatabaseFactory;
+use AbstractFactory\MySqlDatabaseFactory;
+use AbstractFactory\SqliteDatabaseFactory;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-/*$factory = new FileSaveFactory('testFile.txt');
-$factory->createSaver()->save('hello world');*/
+function queryExecute(DatabaseFactory $factory) {
+    $obj = $factory->query();
+    $obj->execute("INSERT INTO `messages`(`text`) VALUES ('test')");
+}
 
-$factory = new MysqlSaveFactory('127.0.0.1', 'root', '', 'db');
-$factory->createSaver()->save('hello world');
+queryExecute(new MySqlDatabaseFactory('127.0.0.1', 'root', '', 'patterns'));
+queryExecute(new SqliteDatabaseFactory('test.db'));
