@@ -1,17 +1,21 @@
 <?php
 
-use AbstractFactory\DatabaseFactory;
-use AbstractFactory\MySqlDatabaseFactory;
-use AbstractFactory\SqliteDatabaseFactory;
+
+use Builder\ISQLQueryBuilder;
+use Builder\MySQLQueryBuilder;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-function queryExecute(DatabaseFactory $factory) {
-    $obj = $factory->query();
-    $obj->execute("INSERT INTO `messages`(`text`) VALUES ('test')");
+function queryExecute(ISQLQueryBuilder $builder) {
+    $query = $builder
+        ->select(['id', 'text'])
+        ->from('table')
+        ->where('id', 1)
+        ->getQuery();
+
+    echo $query;
 }
 
-queryExecute(new MySqlDatabaseFactory('127.0.0.1', 'root', '', 'patterns'));
-queryExecute(new SqliteDatabaseFactory('test.db'));
+queryExecute(new MySQLQueryBuilder());
