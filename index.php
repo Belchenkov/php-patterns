@@ -1,21 +1,17 @@
 <?php
 
 
-use Builder\ISQLQueryBuilder;
-use Builder\MySQLQueryBuilder;
+use Prototype\User;
+use Prototype\Post;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-function queryExecute(ISQLQueryBuilder $builder) {
-    $query = $builder
-        ->select(['id', 'text'])
-        ->from('table')
-        ->where('id', 1)
-        ->getQuery();
+$user = new User('User');
+$post = new Post($user, 'First Post', 'Text Post');
+$post->addComment('First Comment');
 
-    echo $query;
-}
+$post2 = clone $post;
 
-queryExecute(new MySQLQueryBuilder());
+var_dump($post2);
