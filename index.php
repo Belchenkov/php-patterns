@@ -1,17 +1,24 @@
 <?php
 
 
-use Prototype\User;
-use Prototype\Post;
+use Observer\Blog;
+use Observer\SendMailPlugin;
+use Observer\ChangeTextPlugin;
+use Observer\ChangeTitlePlugin;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$user = new User('User');
-$post = new Post($user, 'First Post', 'Text Post');
-$post->addComment('First Comment');
+$blog = new Blog();
+$blog->title = "Observer";
+$blog->text = "Testing Observer Pattern";
 
-$post2 = clone $post;
+$blog->attach(new SendMailPlugin(), "");
+$blog->attach(new ChangeTextPlugin(), "blog:create");
+$blog->attach(new ChangeTitlePlugin(), "blog:create");
 
-var_dump($post2);
+$blog->create();
+
+echo $blog->title .= "<br>";
+echo $blog->text .= "<br>";
