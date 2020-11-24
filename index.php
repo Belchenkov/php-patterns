@@ -1,24 +1,27 @@
 <?php
 
 
-use Observer\Blog;
-use Observer\SendMailPlugin;
-use Observer\ChangeTextPlugin;
-use Observer\ChangeTitlePlugin;
+use Strategy\DocumentsSave;
+use Strategy\ImagesSave;
+use Strategy\BaseLogic;
+use Strategy\IFileSave;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$blog = new Blog();
-$blog->title = "Observer";
-$blog->text = "Testing Observer Pattern";
+function saveStrategy(array $strategyCollection): Bool
+{
+    foreach ($strategyCollection as $item) {
+        if ($item instanceof IFileSave) {
+            $item->save();
+        }
+    }
 
-$blog->attach(new SendMailPlugin(), "");
-$blog->attach(new ChangeTextPlugin(), "blog:create");
-$blog->attach(new ChangeTitlePlugin(), "blog:create");
+    return true;
+}
 
-$blog->create();
-
-echo $blog->title .= "<br>";
-echo $blog->text .= "<br>";
+saveStrategy([
+    new ImagesSave('builder.png'),
+    new DocumentsSave('patterns.docx')
+]);
