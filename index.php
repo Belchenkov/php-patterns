@@ -1,12 +1,16 @@
 <?php
 
 
-use TemplateMethod\Page;
-use TemplateMethod\HomePage;
+use NullObject\Db;
+use NullObject\UserRepository;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$home = new HomePage();
-$home->output();
+$db = new Db('localhost', 'root', '', 'test');
+
+$userRepository = new UserRepository($db);
+$user = $userRepository->fetchById(1);
+
+print_r($user);
