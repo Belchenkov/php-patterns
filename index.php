@@ -1,16 +1,16 @@
 <?php
 
 
-use NullObject\Db;
-use NullObject\UserRepository;
+use Mediator\PageHelper;
+use Mediator\Router;
+use Mediator\Page;
+use Mediator\Data;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$db = new Db('localhost', 'root', '', 'test');
+$router = new Router();
+new PageHelper(new Data(), $router, new Page());
 
-$userRepository = new UserRepository($db);
-$user = $userRepository->fetchById(1);
-
-print_r($user);
+$router->request();
