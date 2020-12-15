@@ -1,16 +1,17 @@
 <?php
 
 
-use Mediator\PageHelper;
-use Mediator\Router;
-use Mediator\Page;
-use Mediator\Data;
+use Command\ChatInterface;
+use Command\User;
+use Command\GoOnline;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$router = new Router();
-new PageHelper(new Data(), $router, new Page());
+$chat = new ChatInterface();
+$user = new User();
 
-$router->request();
+$chat->setCommand(new GoOnline($user));
+$chat->run();
+$chat->undo();
