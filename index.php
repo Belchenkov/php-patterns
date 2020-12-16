@@ -1,17 +1,18 @@
 <?php
 
 
-use Command\ChatInterface;
-use Command\User;
-use Command\GoOnline;
+use Facade\Db;
+use Facade\Mail;
+use Facade\Log;
+use Facade\Document;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$chat = new ChatInterface();
-$user = new User();
+$db = new Db('localhost', 'root', '', 'patterns');
+$log = new Log('logFile.txt');
+$email = new Mail('admin@admin.com', 'subject', 'message', null);
 
-$chat->setCommand(new GoOnline($user));
-$chat->run();
-$chat->undo();
+$document = new Document($db, $log, $email);
+$document->save('Test Message');
