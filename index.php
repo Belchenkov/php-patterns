@@ -1,18 +1,12 @@
 <?php
 
 
-use Facade\Db;
-use Facade\Mail;
-use Facade\Log;
-use Facade\Document;
+use Adapter\PaymentAdapter;
+use Adapter\WebMoney;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$db = new Db('localhost', 'root', '', 'patterns');
-$log = new Log('logFile.txt');
-$email = new Mail('admin@admin.com', 'subject', 'message', null);
-
-$document = new Document($db, $log, $email);
-$document->save('Test Message');
+$adapter = new PaymentAdapter(new WebMoney(['key' => 'secret']));
+$adapter->pay(1000);
