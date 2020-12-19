@@ -1,18 +1,25 @@
 <?php
 
 
-use Decorator\BasicPage;
-use Decorator\HomePage;
+use Composite\Form;
+use Composite\LabelElement;
+use Composite\InputElement;
+use Composite\FieldsetElement;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$page = new BasicPage('Title First');
-/*
-echo $page->getTitle()  . "</br>";
-echo $page->render();*/
+$form = new Form();
+$form->addInput(new LabelElement('Email '));
+$form->addInput(new InputElement());
 
-$home_page = new HomePage($page);
-echo $home_page->getTitle() . "</br>";
-echo $home_page->render() . "</br>";
+$fieldset = new FieldsetElement();
+$fieldset->addInput(new LabelElement('<br/>First Name '));
+$fieldset->addInput(new InputElement());
+$fieldset->addInput(new LabelElement('<br/>Last Name '));
+$fieldset->addInput(new InputElement());
+
+$form->addInput($fieldset);
+
+echo $form->render();
