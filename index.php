@@ -1,25 +1,30 @@
 <?php
 
 
-use Composite\Form;
-use Composite\LabelElement;
-use Composite\InputElement;
-use Composite\FieldsetElement;
+use Bridge\MysqlDriver;
+use Bridge\SaveSave;
+use Bridge\SimpleSave;
+use Bridge\SqliteDriver;
 
 require "functions.php";
 
 spl_autoload_register('project_autoload');
 
-$form = new Form();
-$form->addInput(new LabelElement('Email '));
-$form->addInput(new InputElement());
+$mysqlDriver = new MysqlDriver('localhost', 'root', '', 'patterns');
+$sqliteDriver = new SqliteDriver('bridge.db');
 
-$fieldset = new FieldsetElement();
-$fieldset->addInput(new LabelElement('<br/>First Name '));
-$fieldset->addInput(new InputElement());
-$fieldset->addInput(new LabelElement('<br/>Last Name '));
-$fieldset->addInput(new InputElement());
+$simpleSave = new SimpleSave($mysqlDriver, 'Test');
+$simpleSave->save();
 
-$form->addInput($fieldset);
+$simpleSave = new SimpleSave($sqliteDriver, 'Test');
+$simpleSave->save();
 
-echo $form->render();
+
+$saveSave = new SaveSave($mysqlDriver, 'Test', 'md5');
+$saveSave->save();
+
+$saveSave = new SaveSave($sqliteDriver, 'Test', 'md5');
+$saveSave->save();
+
+
+
